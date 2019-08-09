@@ -5366,6 +5366,7 @@ ul.select-row-icon li a.selected i.whn-hov,ul.select-row-icon li a:hover i.whn-h
 }
 .sidebar #side-menu .user-pro .img-circle{
     width:30px;
+    height:30px;
     margin-right:10px
 }
 .sidebar #side-menu .user-pro>a{
