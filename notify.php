@@ -8,6 +8,8 @@ $status_code         = $_POST['status_code'];
 
 if ($status_code == 2 ){
         //TODO: Update  database as payment success
+        date_default_timezone_set('Asia/Kolkata');
+        $date = date("Y-m-d H:i:s");
 
         require_once 'php/conn.php';
 
@@ -21,7 +23,7 @@ if ($status_code == 2 ){
                 echo "Error - ".$regestration_number." updating record: " . $conn->error;
             }
 
-        $query1 = "INSERT INTO payment (timestamp, type, regestration_number) VALUES (now(), 'Annual', $regestration_number)";
+        $query1 = "INSERT INTO payment (timestamp, type, regestration_number) VALUES ('$date', 'Annual', $regestration_number)";
 
         if ($conn->query($query1) === TRUE) {
                 echo "<br> Record ".$regestration_number." inserted successfully";
