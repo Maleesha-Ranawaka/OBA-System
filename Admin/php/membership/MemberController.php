@@ -8,6 +8,10 @@ switch ($action) {
     approveRegistration();
     break;
 
+    case "approvePayment":
+    approvePayment();
+    break;
+
     case "removeMember":
     removeMember();
     break;
@@ -25,8 +29,16 @@ function removeMember(){
     $regId = $_REQUEST['q'];
 
     $member = new Member();
-
+    console.log("awa");
     $result = $member->removeMember($regId);
+}
+
+function approvePayment(){
+    $regId = $_REQUEST['q'];
+
+    $member = new Member();
+
+    $result = $member->approvePayment($regId);
 }
 
 ?>

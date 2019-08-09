@@ -162,6 +162,26 @@
                 });
         });
 
+        $(document).on('click', '.approvePayment', function(){
+            $dataString=$(this).val();
+            alert($dataString);
+            $('#approve'+$dataString).modal('hide');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+                $.ajax({
+                    type: "POST",
+                    url: "./php/membership/MemberController.php",
+                    data: {
+                        q: $dataString,
+                        action: "approvePayment",
+                    },
+                    success: function(){
+                        showMemberList();
+                    }
+                });
+        });
+
+
         function showMemberList(){
 		$.ajax({
 			url: 'MembersList.php',

@@ -76,12 +76,11 @@ $no_reg ='';
                                 while ($row = mysqli_fetch_array($pendingPaymentMembers)) { ?>
                                 <li>
                                     <div class="call-chat">
-                                        <button class="btn btn-success" data-toggle="modal" data-target="#edit<?php echo $row['regestration_number']; ?>"><span class = "glyphicon glyphicon-pencil"></span> View</button>  <button class="btn btn-danger delete" data-toggle="modal" data-target="#delete<?php echo $row['regestration_number']; ?>"><span class = "glyphicon glyphicon-trash"></span> Remove</button>                                                      
+                                        <button class="btn btn-primary" data-toggle="modal" data-target="#approve<?php echo $row['regestration_number']; ?>"><span class = "glyphicon glyphicon-ok"></span> Approve</button>                                                      
                                     </div>
                                     <a href="javascript:void(0)"><img src="<?php echo $row['profile_picture_url']; ?>" alt="user-img" class="img-circle"> <span><?php echo $row['name']; ?><small class="text-success"><?php echo $row['email_address']; ?></small></span></a>
                                     
-                            <?php include('member_modal.php'); ?>
-                            <?php include('member_deleteModal.php'); ?>
+                            <?php include('member_approveModal.php'); ?>
                                     <?php  } 
                                     }else{ ?>
                                         <div class="col-6 col-lg-3"><p>No result found</p></div>

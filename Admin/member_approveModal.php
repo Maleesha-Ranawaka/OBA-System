@@ -1,19 +1,19 @@
-<div id="delete<?php echo $row['regestration_number']; ?>" class="modal fade" role="dialog">
+<div id="approve<?php echo $row['regestration_number']; ?>" class="modal fade" role="dialog">
 	<div class="modal-dialog modal-confirm">
 		<div class="modal-content">
 			<div class="modal-header">
 				<div class="icon-box">
-					<i class="material-icons">🗑</i>
+					<i class="material-icons">💵</i>
 				</div>				
-				<h4 class="modal-title">Are you sure?</h4>	
+				<h4 class="modal-title">Approve Payment?</h4>	
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 			</div>
 			<div class="modal-body">
-				<p>Do you really want to delete <?php echo $row['name']; ?> ? This process cannot be undone.</p>
+				<p>Do you want to Approve pending payment by <?php echo $row['name']; ?> ? This process cannot be undone.</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
-				<button type="button" class="deleteMember btn btn-danger" value="<?php echo $row['regestration_number']; ?>">Delete</button>
+				<button type="button" class="approvePayment btn btn-warning" value="<?php echo $row['regestration_number']; ?>">Approve</button>
 			</div>
 		</div>
 	</div>
@@ -68,10 +68,10 @@
 		border-radius: 50%;
 		z-index: 9;
 		text-align: center;
-		border: 3px solid #f15e5e;
+		border: 3px solid #60c7c1 !important;
 	}
 	.modal-confirm .icon-box i {
-		color: #f15e5e;
+		color: #60c7c1 !important;
 		font-size: 46px;
 		display: inline-block;
 		margin-top: 13px;
@@ -97,10 +97,10 @@
         background: #a8a8a8;
     }
     .modal-confirm .btn-danger {
-        background: #f15e5e;
+        background: #60c7c1;
     }
     .modal-confirm .btn-danger:hover, .modal-confirm .btn-danger:focus {
-        background: #ee3535;
+        background: #60c7c1;
     }
 	.trigger-btn {
 		display: inline-block;
