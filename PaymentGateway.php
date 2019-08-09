@@ -72,7 +72,14 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Registration ID<span class="required">*</span></label>
+                            <input type="text" id="regID" class="form-control" name="order_id"  placeholder="Registration ID" required>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
@@ -161,13 +168,12 @@
                     <div class="col-md-9"></div>
                         <div class="col-md-3">
                                 <input type="hidden" name="merchant_id" value="1212807">    <!-- Replace your Merchant ID -->
-                                <input type="hidden" name="return_url" value="http://sample.com/return">
-                                <input type="hidden" name="cancel_url" value="http://sample.com/cancel">
-                                <input type="hidden" name="notify_url" value="http://sample.com/notify">   
+                                <input type="hidden" name="return_url" value="http://oba-system.herokuapp.com/">
+                                <input type="hidden" name="cancel_url" value="http://oba-system.herokuapp.com/paymentGateway.php">
+                                <input type="hidden" name="notify_url" value="http://oba-system.herokuapp.com/notify.php">   
                                     
                                 <input type="hidden" name="last_name" value="">
                                 <input type="hidden" name="city" value="">
-                                <input type="hidden" name="order_id" value="">
                                 <input type="hidden" name="currency" value="LKR">
                         <!-- <input id="submit" name="submit" type="button" value="Submit" class="btn btn-primary  btn-dn-submit submit btn form-control"> -->
                         <input type="submit" id="submit" name="submit" value="Submit" class="btn btn-primary  btn-dn-submit submit btn form-control">
