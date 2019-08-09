@@ -191,14 +191,15 @@ $no_totalreg ='';
                     <!-- .col -->
                     <div class="col-md-12 col-lg-8 col-sm-12">
                         <div class="white-box">
+                   <!-------------------    added by dj: integrating the sms gateway ------------>
                         <form  action= "./index.php" method="post">
                             <h3 class="box-title">Send a Message to Members....</h3>
-                            <input type="text" name="moblile_number" maxlength="9"  style="width: 100%;height: 15px;padding: 12px 20px;box-sizing: border-box;
+                            <input type="text" name="moblile_number" maxlength="9" required  style="width: 100%;height: 15px;padding: 12px 20px;box-sizing: border-box;
                             border: 2px solid #ccc;border-radius: 4px;background-color: #f8f8f8;resize: none; margin-bottom:5px" placeholder="mobile number" rows="1" cols="90"/>
                                 
                            
-                            <textarea name="message" style="width: 100%;height: 150px;padding: 12px 20px;box-sizing: border-box;
-                            border: 2px solid #ccc;border-radius: 4px;background-color: #f8f8f8;resize: none;" rows="4" cols="90">
+                            <textarea name="message" required style="width: 100%;height: 150px;padding: 12px 20px;box-sizing: border-box;
+                            border: 2px solid #ccc;border-radius: 4px;background-color: #f8f8f8;resize: none;" rows="4" cols="90" placeholder="your message here">
                                 
                             </textarea>
                             <button type="submit" method="post" name="sendMessage" style="background-color:orange;border: none;color: black;padding: 12px 20px;text-align: center;text-decoration: none;
@@ -210,7 +211,18 @@ $no_totalreg ='';
 
                             if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['sendMessage']))
                             {
-                                func();
+                                // checking whther message is null 
+                                if(is_null($_POST['message'])){
+                                    echo ("<div class=\"alert alert-danger\" role=\"alert\">
+                                            The message cannot be  empty </div>" );
+                                }
+                                // checking for 9 chareters and text in the mobile number 
+                                else if(strlen( $_POST['moblile_number']) < 9 || !is_numeric($_POST['moblile_number'])){
+                                    echo ("<div class=\"alert alert-danger\" role=\"alert\">
+                                           Incorrect mobile number </div>" );
+                                } else {
+                                func();                                    
+                                }
                             }
                             function func()
                             {
@@ -219,7 +231,7 @@ $no_totalreg ='';
                                 $password = "1497";
                                 $text = urlencode($_POST['message']);
                                 $to = "94".$_POST['moblile_number'];
-                                echo($to);
+                                // echo($to);
                                 
                                 $baseurl ="http://www.textit.biz/sendmsg";
                                 $url = "$baseurl/?id=$user&pw=$password&to=$to&text=$text";
@@ -227,13 +239,20 @@ $no_totalreg ='';
                                 
                                 $res= explode(":",$ret[0]);
                                 
+                                // succes message 
                                 if (trim($res[0])=="OK")
+                                // if(0)
                                 {
-                                echo "Message Sent - ID : ".$res[1];
+                                echo "<div class=\"alert alert-success\" role=\"alert\">
+                                The message has been succesfully sent
+                              </div>" ;
                                 }
+                                //  error message 
                                 else
                                 {
-                                echo "Sent Failed - Error : ".$res[1];
+                                echo "<div class=\"alert alert-danger\" role=\"alert\">
+                                The message cannot be  sent 
+                              </div>" ;
                                 }
 
                                 //echo()
@@ -243,6 +262,8 @@ $no_totalreg ='';
 
                            
                         ?>
+
+                        <!-- end of intergration  -->
                         </div>
                     </div>
 
