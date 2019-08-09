@@ -8,10 +8,7 @@ $status_code         = $_POST['status_code'];
 
 if ($status_code == 2 ){
         //TODO: Update  database as payment success
-        echo $merchant_id;
-        echo $order_id;
-        echo $payhere_amount;
-        echo $merchant_id;
+       
 
 }
 
