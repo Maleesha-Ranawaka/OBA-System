@@ -25,7 +25,7 @@ function searchMember(){
                 <div class="sk-chat-widgets">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Registered Members
+                            Search Results
                         </div>
                         <div class="panel-body">
                         <p><?php echo $no_reg; ?> result(s) found</p>
