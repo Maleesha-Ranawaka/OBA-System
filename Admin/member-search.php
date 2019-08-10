@@ -145,7 +145,7 @@ $no_reg ='';
                     </div>
                     <div class="col-md-3">
                       <div class="form-group">
-                        <select class="form-control"  id="department"  name="department">
+                        <select class="form-control"  id="department"  name="department" disabled>
                             <option value="">Select Year</option>
                             <?php for($i=1950; $i<=date("Y"); $i++) { ?>   
                         <option value="<?php echo "$i"; ?>"><?php echo "$i"; ?></option>
