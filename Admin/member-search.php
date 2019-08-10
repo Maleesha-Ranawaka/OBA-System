@@ -62,7 +62,6 @@ $no_reg ='';
 
 
 <?php
-      session_start();
 
       if( isset($_SESSION['login_user']) ){
         echo "<span id ='login_user' style='visibility:hidden; position:absolute;'>".$_SESSION['login_user']."</span>";
@@ -134,7 +133,7 @@ $no_reg ='';
                <div class="row" style="background: #ffffff;padding-top: 25px;margin-bottom: 35px;">
                     <div class="col-md-4">
                       <div class="form-group">
-                        <input type="text" class="form-control"  id="q" placeholder="Name"  name="q">
+                        <input type="text" class="form-control"  id="searchName" placeholder="Name"  name="searchName">
                         <input type="hidden" class="form-control"  id="doc_id" placeholder="Doctor's Name"  name="doc_id">
                       </div>    
                     </div>
@@ -156,73 +155,15 @@ $no_reg ='';
                     </div>
                     <div class="col-md-3">
                       <div class="form-group">
-                        <input type="submit" class="btn btn-success" id="search" value="Search" name="search">&nbsp;&nbsp;
+                        <input type="button" class="searchBtn btn btn-success" id="search" value="Search" name="search">&nbsp;&nbsp;
                         <input type="reset" class="btn btn-danger" id="reset" value="Reset" name="reset">
                       </div>
                     </div>
                     </div></form>
                             </div>
-                            </div></div>
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                        <div class="panel">
-                            <div class="sk-chat-widgets">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        Registrations Pending Members
-                                    </div>
-                                    <div class="panel-body">
-                                    <p><?php echo $no_pen; ?> result(s) found</p>
-                                        <ul class="chatonline">
-                                           
-                                                <?php
-                                                if($no_pen>0){
-                                                    while ($row = mysqli_fetch_array($pendingMembers)) { ?>
-                                                    <li>
-                                                        <div class="call-chat">
-                                                            <button class="btn btn-success btn-lg" type="button" id="approveBtn" value="<?php echo $row['regestration_number']; ?>"><i class="fa fa-check">Approve</i></button>
-                                                            <button class="btn btn-warning btn-lg" type="button"><i class="fa fa-times">Reject</i></button>
-                                                        </div>
-                                                        <a href="javascript:void(0)"><img src="plugins/images/users/varun.jpg" alt="user-img" class="img-circle"> <span><?php echo $row['name']; ?><small class="text-success"><?php echo $row['email_address']; ?></small></span></a>
-                                                        <?php  } 
-                                                        }else{ ?>
-                                                            <div class="col-6 col-lg-3"><p>No result found</p></div>
-                                                    </li>
-                                                <?php  }?>
-                                        </ul>
-                                    </div>
-                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12">
-                        <div class="panel">
-                            <div class="sk-chat-widgets">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        Registered Members
-                                    </div>
-                                    <div class="panel-body">
-                                    <p><?php echo $no_reg; ?> result(s) found</p>
-                                        <ul class="chatonline">
-                                        <?php
-                                        if($no_reg>0){
-                                            while ($row = mysqli_fetch_array($registeredMembers)) { ?>
-                                            <li>
-                                                <div class="call-chat">
-                                                    <button class="btn btn-danger  btn-lg" id="removeBtn" value="<?php echo $row['regestration_number']; ?>" type="button"><i class="fa fa-times">Remove</i></button>
-                                                </div>
-                                                <a href="javascript:void(0)"><img src="<?php echo $row['profile_picture_url']; ?>" alt="user-img" class="img-circle"> <span><?php echo $row['name']; ?><small class="text-success"><?php echo $row['email_address']; ?></small></span></a>
-                                                <?php  } 
-                                                }else{ ?>
-                                                    <div class="col-6 col-lg-3"><p>No result found</p></div>
-                                            </li>
-                                        <?php  }?>
-                                        </ul>
-                                    </div>
-                                </div>
                             </div>
-                        </div>
-                    </div>
+                            <div id="memberList"></div>
                 <!-- /.row -->
             </div>
             <!-- /.container-fluid -->
@@ -245,36 +186,77 @@ $no_reg ='';
     <script src="js/custom.min.js"></script>
 
     <script type="text/javascript">
-    var dataString = document.getElementById("approveBtn").value;
-    var dataString = document.getElementById("removeBtn").value;
-    
     $(document).ready(function(){
-        $("#approveBtn").click(function(){
-            $.ajax({
-                url: './php/membership/MemberController.php',
-                data: {
-                        q: dataString,
-                        action: "approveRegistration"
+        showMemberList();
+        $(document).on('click', '.searchBtn', function(){
+                $dataString=$('#searchName').val();
+                    $.ajax({
+                        type: "POST",
+                        url: "MembersListSearch.php",
+                        data: {
+                            q: $dataString,
+                            action: "searchMember",
+                        },
+                        success: function(response){
+                            $('#memberList').html(response);
+                        }
+                    });
+        });
+
+        $(document).on('click', '.deleteMember', function(){
+            $dataString=$(this).val();
+            $('#edit'+$dataString).modal('hide');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+                $.ajax({
+                    type: "POST",
+                    url: "./php/membership/MemberController.php",
+                    data: {
+                        q: $dataString,
+                        action: "removeMember",
                     },
-                success: function(data) {
-                    location.reload();
-                }
-            });
-    });
-    $("#removeBtn").click(function(){
-            $.ajax({
-                url: './php/membership/MemberController.php',
-                data: {
-                        q: dataString,
-                        action: "removeMember"
+                    success: function(){
+                        showMemberList();
+                    }
+                });
+        });
+
+        $(document).on('click', '.approvePayment', function(){
+            $dataString=$(this).val();
+            $('#approve'+$dataString).modal('hide');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+                $.ajax({
+                    type: "POST",
+                    url: "./php/membership/MemberController.php",
+                    data: {
+                        q: $dataString,
+                        action: "approvePayment",
                     },
-                success: function(data) {
-                    location.reload();
-                }
-            });
+                    success: function(){
+                        showMemberList();
+                    }
+                });
+        });
+
+
+        function showMemberList(){
+		$.ajax({
+			url: 'MembersList.php',
+			type: 'POST',
+			async: false,
+			data:{
+				show: 1
+			},
+			success: function(response){
+				$('#memberList').html(response);
+			}
+		});
+        }
+
     });
-    });
-    </script>
+	
+    </script> 
 
 <script>
 
@@ -306,6 +288,9 @@ var user_admin_role =  document.getElementById("login_user_role").innerHTML;
      
   }
 </script>
+
+
+
 </body>
 
 </html>
