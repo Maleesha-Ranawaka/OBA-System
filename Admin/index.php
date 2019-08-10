@@ -245,24 +245,28 @@ $no_totalreg ='';
                                 
                                
                                 // echo($_POST['moblile_number']);
-                            //     $user = $userInfo[0];
-                            //    $password = $userInfo[1];
-                            //     $text = urlencode($_POST['message']);
-                            //     $to = "94".$_POST['moblile_number'];
+                                $user = $userInfo[0];
+                               $password = $userInfo[1];
+                                $text = urlencode($_POST['message']);
+                                $to = "94".$_POST['moblile_number'];
                             //     // echo($to);
                                 
-                            //     $baseurl ="http://www.textit.biz/sendmsg";
-                            //     $url = "$baseurl/?id=$user&pw=$password&to=$to&text=$text";
-                            //     $ret = file($url);
+                                $baseurl ="http://www.textit.biz/sendmsg";
+                                $url = "$baseurl/?id=$user&pw=$password&to=$to&text=$text";
+                                $ret = file($url);
                                 
-                            //     $res= explode(":",$ret[0]);
+                                $res= explode(":",$ret[0]);
                                 
-                            //     // succes message 
-                            //     if (trim($res[0])=="OK")
-                                if(1)
+                                // succes message 
+                                if (trim($res[0])=="OK")
+                                // if(1)
                                 {
-                                    $result = mysqli_query( $conn2, "insert into heroku_c89e249aac6f9c4.bulk_messages(sender , `timestamp` , description ) 
-                                    values ( '953280087', current_timestamp() , ' ');");
+                                    $msg = preg_replace("/[,.)(]/", "" ,$_POST['message']);
+                                    $user = $_SESSION['regestration_number'];
+                                    $sql = "insert into heroku_c89e249aac6f9c4.bulk_messages(sender , `timestamp` , description ) values ( '$user', current_timestamp() , '$msg');";
+                                    $result2 = mysqli_query( $conn2,$sql);
+                                    // echo($result2);
+                                    // echo($msg);
 
                                 echo "<div class=\"alert alert-success\" role=\"alert\">
                                 The message has been succesfully sent
