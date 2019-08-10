@@ -168,9 +168,9 @@
                     <div class="col-md-9"></div>
                         <div class="col-md-3">
                                 <input type="hidden" name="merchant_id" value="1212807">    <!-- Replace your Merchant ID -->
-                                <input type="hidden" name="return_url" value="http://oba-system.herokuapp.com/">
-                                <input type="hidden" name="cancel_url" value="http://oba-system.herokuapp.com/paymentGateway.php">
-                                <input type="hidden" name="notify_url" value="http://oba-system.herokuapp.com/notify.php">   
+                                <input type="hidden" name="return_url" value="https://gnex-princeoba-dev.herokuapp.com/">
+                                <input type="hidden" name="cancel_url" value="https://gnex-princeoba-dev.herokuapp.com/paymentGateway.php">
+                                <input type="hidden" name="notify_url" value="https://gnex-princeoba-dev.herokuapp.com/notify.php">   
                                     
                                 <input type="hidden" name="last_name" value="">
                                 <input type="hidden" name="city" value="">
