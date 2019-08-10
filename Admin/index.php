@@ -26,6 +26,9 @@ $no_totalreg =mysqli_num_rows($totalMembers);
 }else{
 $no_totalreg ='';
 }
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -194,8 +197,25 @@ $no_totalreg ='';
                    <!-------------------    added by dj: integrating the sms gateway ------------>
                         <form  action= "./index.php" method="post">
                             <h3 class="box-title">Send a Message to Members....</h3>
-                            <input type="text" name="moblile_number" maxlength="9" required  style="width: 100%;height: 15px;padding: 12px 20px;box-sizing: border-box;
-                            border: 2px solid #ccc;border-radius: 4px;background-color: #f8f8f8;resize: none; margin-bottom:5px" placeholder="mobile number" rows="1" cols="90"/>
+                            
+                            <select name="moblile_number" style="width: 100%;height: 25px; background-color: #f8f8f8;  margin-bottom:5px" >
+                           
+                           <!-- getting the user member information from the database  -->
+                           
+                            <?php 
+                                require('./php/messageSender/conn2.php');
+                                $result = mysqli_query( $conn2, "select member.mobile_number , member.`name` from heroku_c89e249aac6f9c4.member ;");
+                                while($row = mysqli_fetch_assoc($result)){
+                                    //  echo('dinith');
+                                    echo("<option value= ".$row['mobile_number']." > ".$row['name']." </option>");
+                                 }
+
+                                
+
+                            ?>
+                            </select>
+                            <!-- <input type="text" name="moblile_number" maxlength="9" required  style="width: 100%;height: 15px;padding: 12px 20px;box-sizing: border-box;
+                            border: 2px solid #ccc;border-radius: 4px;background-color: #f8f8f8;resize: none; margin-bottom:5px" placeholder="mobile number" rows="1" cols="90"/> -->
                                 
                            
                             <textarea name="message" required style="width: 100%;height: 150px;padding: 12px 20px;box-sizing: border-box;
@@ -208,9 +228,10 @@ $no_totalreg ='';
                         </form>
                         <?php
                                                      
-
+                            
                             if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['sendMessage']))
                             {
+                                // echo($_POST['moblile_number']);
                                 // checking whther message is null 
                                 if(is_null($_POST['message'])){
                                     echo ("<div class=\"alert alert-danger\" role=\"alert\">
@@ -226,9 +247,24 @@ $no_totalreg ='';
                             }
                             function func()
                             {
+                                //  querying and obtaining data un and pw from db
+                                require('./php/messageSender/conn2.php');
+                                
+                                $userInfo = array();
+          
+                                $result = mysqli_query( $conn2, "select configerations.`value` from  heroku_c89e249aac6f9c4.configerations where configerations.prperty = 'sms_gateway_username' or configerations.prperty = 'sms_gateway_password';");
+                               
+                                 while($row = mysqli_fetch_assoc($result)){
+                                    //  echo('dinith');
+                                     array_push($userInfo , $row['value']);
+                                 }
+                                
+                                //  sending the message through the details obtained
+                                
+                               
                                 // echo($_POST['moblile_number']);
-                                $user = "94770508710";
-                                $password = "1497";
+                                $user = $userInfo[0];
+                               $password = $userInfo[1];
                                 $text = urlencode($_POST['message']);
                                 $to = "94".$_POST['moblile_number'];
                                 // echo($to);
@@ -241,8 +277,15 @@ $no_totalreg ='';
                                 
                                 // succes message 
                                 if (trim($res[0])=="OK")
-                                // if(0)
+                                // if(1)
                                 {
+                                    $msg = preg_replace("/[,.)(]/", "" ,$_POST['message']);
+                                    $user = $_SESSION['regestration_number'];
+                                    $sql = "insert into heroku_c89e249aac6f9c4.bulk_messages(sender , `timestamp` , description ) values ( '$user', CONVERT_TZ(utc_timestamp(),'+00:00','+05:30') , '$msg');";
+                                    $result2 = mysqli_query( $conn2,$sql);
+                                    // echo($result2);
+                                    // echo($msg);
+
                                 echo "<div class=\"alert alert-success\" role=\"alert\">
                                 The message has been succesfully sent
                               </div>" ;
