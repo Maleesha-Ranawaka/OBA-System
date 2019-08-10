@@ -74,7 +74,7 @@ class Member extends Dbh{
         echo "Done";
     }
     
-    //tempory
+    // tempory
     function getPaymentPendingMembers(){
         $query ="SELECT * FROM member,user WHERE user.status='2' and member.regestration_number = user.regestration_number";
         $result =$this->connect()->query($query);   
@@ -103,8 +103,17 @@ class Member extends Dbh{
         
     }
 
-
-   
+    function searchMember($val){
+        $name = $val."%";
+        $query ="SELECT * FROM member WHERE member.name Like '$name'";
+        // echo '<script language="javascript">';
+        // echo 'alert("'.$query.'")';
+        // echo '</script>';
+        $result =$this->connect()->query($query);   
+        $no_reg =mysqli_num_rows($result);
+        return $result;
+        
+    }
 
 }
 
