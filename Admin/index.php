@@ -191,14 +191,79 @@ $no_totalreg ='';
                     <!-- .col -->
                     <div class="col-md-12 col-lg-8 col-sm-12">
                         <div class="white-box">
+                   <!-------------------    added by dj: integrating the sms gateway ------------>
+                        <form  action= "./index.php" method="post">
                             <h3 class="box-title">Send a Message to Members....</h3>
-                            <textarea style="width: 100%;height: 150px;padding: 12px 20px;box-sizing: border-box;
-                            border: 2px solid #ccc;border-radius: 4px;background-color: #f8f8f8;resize: none;" rows="4" cols="90">
+                            <input type="text" name="moblile_number" maxlength="9" required  style="width: 100%;height: 15px;padding: 12px 20px;box-sizing: border-box;
+                            border: 2px solid #ccc;border-radius: 4px;background-color: #f8f8f8;resize: none; margin-bottom:5px" placeholder="mobile number" rows="1" cols="90"/>
+                                
+                           
+                            <textarea name="message" required style="width: 100%;height: 150px;padding: 12px 20px;box-sizing: border-box;
+                            border: 2px solid #ccc;border-radius: 4px;background-color: #f8f8f8;resize: none;" rows="4" cols="90" placeholder="your message here">
                                 
                             </textarea>
-                            <button style="background-color:orange;border: none;color: black;padding: 12px 20px;text-align: center;text-decoration: none;
+                            <button type="submit" method="post" name="sendMessage" style="background-color:orange;border: none;color: black;padding: 12px 20px;text-align: center;text-decoration: none;
                             display: inline-block;font-size: 18px;margin: 4px 2px;cursor: pointer;">
                                 Send Message</button>
+                        </form>
+                        <?php
+                                                     
+
+                            if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['sendMessage']))
+                            {
+                                // checking whther message is null 
+                                if(is_null($_POST['message'])){
+                                    echo ("<div class=\"alert alert-danger\" role=\"alert\">
+                                            The message cannot be  empty </div>" );
+                                }
+                                // checking for 9 chareters and text in the mobile number 
+                                else if(strlen( $_POST['moblile_number']) < 9 || !is_numeric($_POST['moblile_number'])){
+                                    echo ("<div class=\"alert alert-danger\" role=\"alert\">
+                                           Incorrect mobile number </div>" );
+                                } else {
+                                func();                                    
+                                }
+                            }
+                            function func()
+                            {
+                                // echo($_POST['moblile_number']);
+                                $user = "94770508710";
+                                $password = "1497";
+                                $text = urlencode($_POST['message']);
+                                $to = "94".$_POST['moblile_number'];
+                                // echo($to);
+                                
+                                $baseurl ="http://www.textit.biz/sendmsg";
+                                $url = "$baseurl/?id=$user&pw=$password&to=$to&text=$text";
+                                $ret = file($url);
+                                
+                                $res= explode(":",$ret[0]);
+                                
+                                // succes message 
+                                if (trim($res[0])=="OK")
+                                // if(0)
+                                {
+                                echo "<div class=\"alert alert-success\" role=\"alert\">
+                                The message has been succesfully sent
+                              </div>" ;
+                                }
+                                //  error message 
+                                else
+                                {
+                                echo "<div class=\"alert alert-danger\" role=\"alert\">
+                                The message cannot be  sent 
+                              </div>" ;
+                                }
+
+                                //echo()
+                                                             
+                            }
+
+
+                           
+                        ?>
+
+                        <!-- end of intergration  -->
                         </div>
                     </div>
 
