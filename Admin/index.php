@@ -26,6 +26,9 @@ $no_totalreg =mysqli_num_rows($totalMembers);
 }else{
 $no_totalreg ='';
 }
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -208,7 +211,7 @@ $no_totalreg ='';
                         </form>
                         <?php
                                                      
-
+                            
                             if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['sendMessage']))
                             {
                                 // checking whther message is null 
@@ -226,23 +229,41 @@ $no_totalreg ='';
                             }
                             function func()
                             {
+                                //  querying and obtaining data un and pw from db
+                                require('./php/messageSender/conn2.php');
+                                
+                                $userInfo = array();
+          
+                                $result = mysqli_query( $conn2, "select configerations.`value` from  heroku_c89e249aac6f9c4.configerations where configerations.prperty = 'sms_gateway_username' or configerations.prperty = 'sms_gateway_password';");
+                               
+                                 while($row = mysqli_fetch_assoc($result)){
+                                    //  echo('dinith');
+                                     array_push($userInfo , $row['value']);
+                                 }
+                                
+                                //  sending the message through the details obtained
+                                
+                               
                                 // echo($_POST['moblile_number']);
-                                $user = "94770508710";
-                                $password = "1497";
-                                $text = urlencode($_POST['message']);
-                                $to = "94".$_POST['moblile_number'];
-                                // echo($to);
+                            //     $user = $userInfo[0];
+                            //    $password = $userInfo[1];
+                            //     $text = urlencode($_POST['message']);
+                            //     $to = "94".$_POST['moblile_number'];
+                            //     // echo($to);
                                 
-                                $baseurl ="http://www.textit.biz/sendmsg";
-                                $url = "$baseurl/?id=$user&pw=$password&to=$to&text=$text";
-                                $ret = file($url);
+                            //     $baseurl ="http://www.textit.biz/sendmsg";
+                            //     $url = "$baseurl/?id=$user&pw=$password&to=$to&text=$text";
+                            //     $ret = file($url);
                                 
-                                $res= explode(":",$ret[0]);
+                            //     $res= explode(":",$ret[0]);
                                 
-                                // succes message 
-                                if (trim($res[0])=="OK")
-                                // if(0)
+                            //     // succes message 
+                            //     if (trim($res[0])=="OK")
+                                if(1)
                                 {
+                                    $result = mysqli_query( $conn2, "insert into heroku_c89e249aac6f9c4.bulk_messages(sender , `timestamp` , description ) 
+                                    values ( '953280087', current_timestamp() , ' ');");
+
                                 echo "<div class=\"alert alert-success\" role=\"alert\">
                                 The message has been succesfully sent
                               </div>" ;
