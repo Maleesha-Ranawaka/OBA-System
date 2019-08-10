@@ -263,7 +263,7 @@ $no_totalreg ='';
                                 {
                                     $msg = preg_replace("/[,.)(]/", "" ,$_POST['message']);
                                     $user = $_SESSION['regestration_number'];
-                                    $sql = "insert into heroku_c89e249aac6f9c4.bulk_messages(sender , `timestamp` , description ) values ( '$user', current_timestamp() , '$msg');";
+                                    $sql = "insert into heroku_c89e249aac6f9c4.bulk_messages(sender , `timestamp` , description ) values ( '$user', CONVERT_TZ(utc_timestamp(),'+00:00','+05:30') , '$msg');";
                                     $result2 = mysqli_query( $conn2,$sql);
                                     // echo($result2);
                                     // echo($msg);
