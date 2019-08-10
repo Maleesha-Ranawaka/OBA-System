@@ -15,7 +15,7 @@ if ($status_code == 2 ){
 
         $regestration_number = $order_id;
 
-        $query = "UPDATE user SET status='2' WHERE regestration_number='$regestration_number'";
+        $query = "UPDATE user SET status='3' WHERE regestration_number='$regestration_number'";
 
         if ($conn->query($query) === TRUE) {
                 echo "Record ".$regestration_number." updated successfully";
