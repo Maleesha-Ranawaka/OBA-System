@@ -197,8 +197,25 @@ $no_totalreg ='';
                    <!-------------------    added by dj: integrating the sms gateway ------------>
                         <form  action= "./index.php" method="post">
                             <h3 class="box-title">Send a Message to Members....</h3>
-                            <input type="text" name="moblile_number" maxlength="9" required  style="width: 100%;height: 15px;padding: 12px 20px;box-sizing: border-box;
-                            border: 2px solid #ccc;border-radius: 4px;background-color: #f8f8f8;resize: none; margin-bottom:5px" placeholder="mobile number" rows="1" cols="90"/>
+                            
+                            <select name="moblile_number" style="width: 100%;height: 25px; background-color: #f8f8f8;  margin-bottom:5px" >
+                           
+                           <!-- getting the user member information from the database  -->
+                           
+                            <?php 
+                                require('./php/messageSender/conn2.php');
+                                $result = mysqli_query( $conn2, "select member.mobile_number , member.`name` from heroku_c89e249aac6f9c4.member ;");
+                                while($row = mysqli_fetch_assoc($result)){
+                                    //  echo('dinith');
+                                    echo("<option value= ".$row['mobile_number']." > ".$row['name']." </option>");
+                                 }
+
+                                
+
+                            ?>
+                            </select>
+                            <!-- <input type="text" name="moblile_number" maxlength="9" required  style="width: 100%;height: 15px;padding: 12px 20px;box-sizing: border-box;
+                            border: 2px solid #ccc;border-radius: 4px;background-color: #f8f8f8;resize: none; margin-bottom:5px" placeholder="mobile number" rows="1" cols="90"/> -->
                                 
                            
                             <textarea name="message" required style="width: 100%;height: 150px;padding: 12px 20px;box-sizing: border-box;
@@ -214,6 +231,7 @@ $no_totalreg ='';
                             
                             if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['sendMessage']))
                             {
+                                // echo($_POST['moblile_number']);
                                 // checking whther message is null 
                                 if(is_null($_POST['message'])){
                                     echo ("<div class=\"alert alert-danger\" role=\"alert\">
@@ -249,7 +267,7 @@ $no_totalreg ='';
                                $password = $userInfo[1];
                                 $text = urlencode($_POST['message']);
                                 $to = "94".$_POST['moblile_number'];
-                            //     // echo($to);
+                                // echo($to);
                                 
                                 $baseurl ="http://www.textit.biz/sendmsg";
                                 $url = "$baseurl/?id=$user&pw=$password&to=$to&text=$text";
