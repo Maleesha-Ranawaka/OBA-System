@@ -76,7 +76,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Registration ID<span class="required">*</span></label>
-                            <input type="text" id="regID" class="form-control" name="order_id"  placeholder="Registration ID" required>
+                            <input type="text" id="regID" class="form-control" name="order_id"  placeholder="Registration ID" onchange="getUserDetails(this.value)" required>
                         </div>
                     </div>
                 </div>
@@ -186,6 +186,62 @@
 
 
 <!-- site body end -->
+
+<script>
+
+    var registrationID;
+
+    function getUserDetails(registrationID) {
+        
+        //alert(registrationID);
+        var dataString = 'method=1&rid=' + registrationID ;
+
+        $.ajax({
+            type: "POST",            
+            data: dataString,
+            dataType: 'json',
+            url: "php/paymentUser.php",
+
+            success: function(response) {
+                //console.log(response);
+                    if(response != null)
+                    {
+                        var len = response.length;
+                        //alert (len);
+                        for(var i=0; i<len; i++){
+
+                            var name = response[i].name;
+                            var address = response[i].address;
+                            var mobile_number = response[i].mobile_number;
+                            var email_address = response[i].email_address;
+                            
+                        }
+                                        //console.log(response);
+                                        //console.log(name);
+
+                        $('#name').val(name);
+                        $('#address').val(address);
+                        $('#mobile').val(mobile_number);
+                        $('#email').val(email_address);
+                        //document.getElementById(name).innerHTML = name;
+                    }
+                    else{
+                        $('#name').val("");
+                        $('#address').val("");
+                        $('#mobile').val("");
+                        $('#email').val("");
+                        //alert("wrong");
+                    }
+
+                
+        }
+        });
+    
+    }   
+
+
+
+</script>
 
 
 <!-- site footer -->
