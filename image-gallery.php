@@ -73,7 +73,7 @@
 <div class="row">  
 
 <div class="site-section-header">
-    <h3>Image Gallery</h3>
+    <h3>Gallery</h3>
 </div>
 
 <div class="site-section-content">  
