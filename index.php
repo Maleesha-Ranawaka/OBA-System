@@ -335,7 +335,7 @@
 
   <div class="site-blog-list">
 
-    <!-- <div class="site-post-item">
+    <div class="site-post-item">
       <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 site-post-thumb">
       <a href="post-regular.html">
       <img src="images/site-images/IG1.png" alt="">
@@ -354,7 +354,7 @@
       <a href="post-regular.html">Read More <i class="fa fa-angle-right" aria-hidden="true"></i></a>
       </div>
       </div>
-    </div> -->
+    </div>
         <div class="site-post-item">
       <div class="site-post-details">
       <div class="site-clearfix"></div>
